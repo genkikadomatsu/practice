@@ -1,41 +1,36 @@
-from collections import deque
-
-# LeetCode 200
 class Solution:
     def numIslands(self, grid: list[list[str]]) -> int:
-        """Find the number of islands in grid."""
-
         island_count = 0
+        dfs_stack = []
         visited = set()
         m, n = len(grid), len(grid[0])
 
+        def dfs(x, y):
+            visited.add((x, y))
+            dfs_stack.append((x , y))
 
-        # run bfs
-        def bfs(x, y):
-            bfs_q = deque()
-            bfs_q.append((x, y))
-
-            while bfs_q:
-                temp = bfs_q.popleft()
-                neighbors = [[temp[0] + 1, temp[1]    ],
-                             [temp[0] - 1, temp[1]    ],
-                             [temp[0]    , temp[1] - 1],
-                             [temp[0]    , temp[1] + 1]]
+          
+            
+            while dfs_stack:
+                curr = dfs_stack.pop()
+                neighbors = [[curr[0] + 1, curr[1]],
+                             [curr[0] - 1, curr[1]],
+                             [curr[0], curr[1] + 1],
+                             [curr[0], curr[1] - 1]]  
                 for nx, ny in neighbors:
-                    if (nx not in range(m)) or (ny not in range(n)):
+                    if nx not in range(m) or ny not in range(n):
                         pass
-                    elif (grid[nx][ny] == "1") and ((nx, ny) not in visited):
-                        bfs_q.append((nx, ny))
+                    elif grid[nx][ny] == "1" and (nx, ny) not in visited:
                         visited.add((nx, ny))
+                        dfs_stack.append((nx, ny))
+                
+                
 
-
-        # run bfs on each unvisited "1"
         for i in range(m):
             for j in range(n):
-                if (grid[i][j] == "1") and ((i, j) not in visited):
-                    visited.add((i, j))
+                if grid[i][j] == "1" and (i, j) not in visited:
                     island_count += 1
-                    bfs(i, j)
+                    dfs(i, j)
         
         print(island_count)
         return island_count
