@@ -10,43 +10,68 @@ class Solution:
     def diameterOfBinaryTree(self, root: TreeNode) -> int:
 
         max_diam = 0
+        
+        def recurse(root):
 
-        def max_height(node):
-            
             nonlocal max_diam
 
-            if not node:
-                return 0
+            if not root: return -1
+
+            left_depth = 1 + recurse(root.left)
             
-            left_height = max_height(node.left)
-            right_height = max_height(node.right)
-            max_diam = max(max_diam, left_height + right_height)
-            return 1 + max(left_height, right_height)
+            right_depth = 1 + recurse(root.right)
+            print("Root ", root.val, "Left Depth ", left_depth, "Right Depth ", right_depth)
+            diam = left_depth + right_depth
+            if diam > max_diam: max_diam = diam
+            return max(left_depth, right_depth)
+            
         
-        max_height(root)
+        recurse(root)
         return max_diam
+
 # Examples
-#  
-#      /\
-#     /
-#    /\
-#   /  \
-#  /    \
-# /      \
-# This has a diameter of 8, a subtree could potentially have a
+#             1
+#            / \
+#           2   3
+#          /
+#         4
+#        / \
+#       5   6
+#      /     \
+#     7       8 
+#    /         \
+#   9          10
+#  /             \
+# 11             12
+#
+# Diameter of 8 not 7
 
-# Leaf Nodes
-node1 = TreeNode(1)
+# Test 1
+node11 = TreeNode(11)
+node12 = TreeNode(12)
+
+node9 = TreeNode(9, left=node11)
+node10 = TreeNode(10, right=node12)
+
+node7 = TreeNode(7, left=node9)
+node8 = TreeNode(8, right=node10)
+
+node5 = TreeNode(5, left=node7)
+node6 = TreeNode(6, right=node8)
+
+node4 = TreeNode(4, node5, node6)
+
+node2 = TreeNode(2, left=node4)
 node3 = TreeNode(3)
-node6 = TreeNode(6)
-node9 = TreeNode(9)
 
-# L2 Nodes
-node2 = TreeNode(2, node1, node3)
-node7 = TreeNode(7, node6, node9)
+node1 = TreeNode(1, left=node2, right=node3)
 
-# Root Node
-node4 = TreeNode(4, node2, node7)
+
+# Test 2
+# node3 = TreeNode(3)
+# node2 = TreeNode(2)
+# node1 = TreeNode(1, left=node2, right=node3)
+
 
 sol = Solution()
-print(sol.diameterOfBinaryTree(node4))
+print(sol.diameterOfBinaryTree(node1))
