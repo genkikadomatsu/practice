@@ -1,0 +1,16 @@
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        
+        max_sum = -inf
+        running_sum = 0
+
+        for n in nums:
+
+            if n >= max_sum:
+                running_sum = n
+            else:
+                running_sum += n
+
+            max_sum = max(max_sum, running_sum)
+        
+        return max_sum

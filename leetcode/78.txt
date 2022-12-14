@@ -1,0 +1,21 @@
+# Subsets
+
+# Iterative
+
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+
+        powerset = [[]]
+
+
+        for n in nums:
+            new = []
+            for ps in powerset:
+               new.append(ps + [n])
+            powerset.extend(new)
+        
+        return powerset
+
+
+# Recurisve
+
