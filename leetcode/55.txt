@@ -1,0 +1,35 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        
+        n = len(nums) - 1
+        needs = 0
+        for i in reversed(range(n)):
+
+            if nums[i] == 0:
+                needs += 1
+            else:
+                if needs <= nums[i]:
+                    needs = 0
+                else:
+                    needs += 1
+        
+        return (needs <= 0)
+
+
+
+
+
+
+
+# 12/21/22
+# LeetCode 55
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+
+        goal = len(nums) - 1
+
+        for i in reversed(range(len(nums))):
+            if i + nums[i] >= goal:
+                goal = i
+            
+        return (goal == 0)
