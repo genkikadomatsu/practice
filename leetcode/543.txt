@@ -1,0 +1,36 @@
+# 12/22/22
+# LeetCode 543
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+
+        diameter = 0
+
+        def max_depth(node):
+
+            nonlocal diameter
+
+            if not node:
+                return 0
+
+            left_depth, right_depth = 0, 0
+
+            if node.left:
+                left_depth = 1 + max_depth(node.left)
+
+            if node.right:
+                right_depth = 1 + max_depth(node.right)
+
+            diameter = max(left_depth + right_depth, diameter)
+
+            return max(left_depth, right_depth)
+        
+        max_depth(root)
+
+        return diameter
