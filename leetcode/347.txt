@@ -26,3 +26,28 @@ class Solution:
         return result[-k:]
 
         
+
+# 12/25/22
+# LeetCode 347
+import collections
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+
+        n = len(nums)
+
+        n_to_count = collections.defaultdict(int)
+
+        for n in nums:
+            n_to_count[n] += 1
+        
+        frequencies = [[] * n]
+
+        for n in n_to_count:
+            frequencies[n_to_count[n]].append(n)
+        
+        flattened = []
+
+        for f in frequencies:
+            flattened = flattened + f
+        
+        return flattened[-k:]
