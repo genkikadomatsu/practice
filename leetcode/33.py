@@ -13,10 +13,9 @@ class Solution:
 
         left, right = 0, len(nums) - 1
 
-        while left < right:
+        while left <= right:
             
             mid = (left + right) // 2
-            print(nums[left], nums[mid], nums[right])
             if nums[mid] == target:
                 return mid
 
@@ -30,9 +29,6 @@ class Solution:
                     right = mid - 1
                 else:
                     left = mid + 1
-
-        if nums[right] == target:
-            return right
 
         return - 1
 while True:
