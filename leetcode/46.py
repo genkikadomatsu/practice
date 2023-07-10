@@ -1,28 +1,44 @@
-
+# Intuitive Solution
 from typing import List
 
-def permute(nums: List[int]) -> List[List[int]]:
-    
-    
-    permutations = []
+class Solution:
 
-    if len(nums) <= 1:
-        return [nums]
-    
-    for i in range(len(nums)):
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        """Returns the symmetric group of nums."""
 
-        sub_nums = nums.copy()
-        removed_element = sub_nums.pop(i)
-        sub_permutations = permute(sub_nums)
-        new_permutations = []
-        for sp in sub_permutations:
-            new_permutation = sp + [removed_element]
-            print(new_permutation)
-            new_permutations.append(new_permutation)
-        permutations.extend(sub_permutations)
-    
-    return permutations
-    
+        permutations = []
+
+        def backtrack(current_permutation: List[int], remainder: List[int]) -> None:
+            """Backtrack."""
+            
+            if not remainder:
+                permutations.append(current_permutation[:])
+
+            for _ in range(len(remainder)):
+                current_permutation.append(remainder.pop(0))
+                backtrack(current_permutation, remainder)
+                remainder.append(current_permutation.pop())
+        
+        backtrack([], nums)
+        return permutations
 
 
-print(permute([1, 2]))
+# class Solution:
+
+#     def permute(self, nums: List[int]) -> List[List[int]]:
+#         """Returns all possible permutations of the input list."""
+
+#         permutations = []
+
+#         if not nums or len(nums) == 1:
+#             return [nums[:]]
+
+#         for i in range(len(nums)):
+#             n = nums.pop(0)
+#             subpermutations = self.permute(nums)
+#             permutations.extend([sp + [n] for sp in subpermutations])
+#             nums.append(n)
+
+#         return permutations
+
+print(Solution().permute([1, 2]))
