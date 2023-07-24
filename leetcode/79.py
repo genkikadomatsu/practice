@@ -12,10 +12,10 @@ class Solution:
         def starts_word(x: int, y: int, index: int) -> bool:
             
             # Terminal invalid cases
-            if (index == len(word) or # out of range index
-                not (0 <= x < m and 0 <= y < n) or # out of range position
-                board[x][y] != word[index] or # not matching character
-                (x, y) in path # already in the path
+            if (index == len(word) or # case: out of range index
+                not (0 <= x < m and 0 <= y < n) or # case: out of range position
+                board[x][y] != word[index] or # case: not matching character
+                (x, y) in path # case: already in the path
             ):
                return False
              
