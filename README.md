@@ -1,4 +1,6 @@
 # Practice Problems
 
-Practice problems from LeetCode (NeetCode150).
-Listed by number of LC problem.
+My personal repository of practice problems.
+* neetcode150 - NeetCode 150 problems.
+* scratch - Random implementations of things for demonstration or practice purposes.
+
