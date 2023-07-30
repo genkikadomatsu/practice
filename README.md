@@ -1,6 +1,6 @@
 # Practice Problems
+Personal repository of practice problems.
 
-My personal repository of practice problems.
-* neetcode150 - NeetCode 150 problems.
-* scratch - Random implementations of things for demonstration or practice purposes.
+## [NeetCode150](https://neetcode.io/)
+These problems are sourced from NeetCode. Most problems match the solutions provided by NeetCode, with small modifications for readability, or preference.
 
