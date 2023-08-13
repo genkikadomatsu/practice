@@ -28,4 +28,6 @@ class Solution:
                     q.append(node.left)
                 if node.right:
                     q.append(node.right)
-                
+
+
+print(Solution().levelOrder(TreeNode(0, TreeNode(1), TreeNode(2))))                

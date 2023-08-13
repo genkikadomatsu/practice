@@ -1,39 +1,76 @@
-# 242 LeetCode
+"""LeetCode 424: Longest Repeating Character Recplacement
 
-def characterReplacement(s: str, k: int) -> int:
+Given some string s, you can replace k characters. Given all potential
+replacements of k characters in the string, return the length of the longest
+mono-character substring.
 
-    result = 0
+"AABABBA", 1 => 4
+"ABAB", 2 => 4
+"AAB", 0 => 2
+"""
+
+class Solution:
+ 
+    def characterReplacement(self, s: str, k: int) -> int:
+        """
+        This is the optimal O(n) approach, where we track the most frequent
+        character in the 'window', becaues that character will be the one that
+        has the longest mono-character substring.
+
+        :param s: The input string.
+        :param k: The maximum number of character replacements allowed.
+        :returns: The length of the longest repeated-character string possible.
+        """
+        char_counts = {}
+        result, start_i = 0, 0
+        
+        for end_i in range(len(s)):
+            # Update the count of the current character.
+            char_counts[s[end_i]] = 1 + char_counts.get(s[end_i], 0)
+
+            # Shift the start until our window is only using k replacements. 
+            while (end_i - start_i + 1 - max(char_counts.values())) > k: # O(26) 
+                char_counts[s[start_i]] -= 1
+                start_i += 1
+
+            result = max(result, end_i - start_i + 1)
     
-    for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        return result
 
-        current_k_usage = 0
-        start_index = 0
+    def naive_approach(self, s: str, k: int) -> int:
+        """
+        This is the naive approach, which is still O(n), but not optimal.
 
-        for index in range(len(s)): 
+        :param s: The input string.
+        :param k: The maximum number of character replacements allowed.
+        :returns: The length of the longest repeated-character string possible.
+        """
 
-            # Add to k-usage if we are now using another k
-            if s[index] != letter:
-                current_k_usage += 1
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        max_length = 0
 
-            # If we're past k-capacity, we need to shift the start pointer until we are good 
-            while current_k_usage > k and start_index < index:
-                if s[start_index] != letter:
-                    current_k_usage -= 1
-                start_index += 1
+        for c in alphabet: 
+            replacements, start_i = 0, 0
 
-            # If we attempted to shift the start pointer to decrease k-usage, but it is still above capacity
-            # - that means we shouldn't calculate the new max because it is an illegal k-usage ammount 
-            # - this can only happen if start_index = index and current_k_usage is still more than k, which means
-            #   - that this condition only happens when k == 0
-            if current_k_usage > k:
-                print("Special continue case")
-                continue
-            
-            # If we successfully decreased k-usage, we can calculate the new length
-            result = max(index - start_index + 1, result)
+            for end_i in range(len(s)):
+
+                # Case: Non-matching char.
+                if s[end_i] != c:
+
+                    # Sub-case: A replacement is available.
+                    if replacements < k:
+                        replacements += 1
+
+                    # Sub-case: Non-matching char, and replacements unavailable.
+                    else:
+                        # Shift start pointer 'over' 1 non-matching char.
+                        while s[start_i] == c:
+                            start_i += 1
+                        start_i += 1
+
+                # We do +1 here because the string is pointer inclusive.                
+                max_length = max(end_i - start_i + 1, max_length)
+
+        return max_length 
     
-    return result
-
-
-while True:
-    print(characterReplacement(input("s:"), int(input("k:"))))
+print(Solution().characterReplacement(input("s:"), int(input("k:"))))
