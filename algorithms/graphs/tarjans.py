@@ -13,7 +13,8 @@ def tarjans(graph: list[Node]):
     strongly_connected_components = []
 
     def dfs(node: Node):
-        
+
+        ############################## Exploration ############################# 
         # Initialize Node for Tarjan's 
         nonlocal time
         time += 1
@@ -22,14 +23,17 @@ def tarjans(graph: list[Node]):
         node.visited = True
         tarjan_stack.append(node)
 
-        # Explore this node's neighbors.
+        # (Exploration) Explore this node's unvisited neighbors.
         for neighbor in node.neighbors:
-             
-            # If a neighbor is not visited yet, recurse on it.
             if not neighbor.visited:
                 dfs(neighbor)
+    	########### End of exploration, all neighbors are now visited ##########
 
-            # If the neighbor is on the tarjan stack, update low-link.
+
+        ############################## Callback ################################ 
+        # Set this node's low link to the minimum of all neighbors that are
+        # still on the Tarjan's stack.
+        for neighbor in node.neighbors:
             if neighbor in tarjan_stack:
                 node.low_link = min(node.low_link, neighbor.low_link)
 
@@ -38,7 +42,8 @@ def tarjans(graph: list[Node]):
             last_popped = None
             scc = []
 
-            # Pop from stack until this node is popped.
+            # If so, pop from stack until this node is popped. All the popped
+            # nodes combined are one SCC.
             while last_popped != node:
                 last_popped = tarjan_stack.pop()
                 scc.append(last_popped)
@@ -51,5 +56,6 @@ def tarjans(graph: list[Node]):
 
     yield from strongly_connected_components
 
+# Pick some unvisited node to perform our procedure on.
 for scc in tarjans(graph2()):
     print(scc)
