@@ -27,6 +27,7 @@ Pipfile*
 *.la
 *.a
 *.lib
+__pycache__/
 
 # Executables
 *.exe
