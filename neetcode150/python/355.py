@@ -1,67 +1,32 @@
 from typing import List
-
-class Tweet:
-    """Represents a Tweet."""
-
-    def __init__(self, id: int, time: int):
-        self.id = id
-        self.time = time
-
-    def __lt__(self, other) -> bool:
-        return self.time < other.time
-
-    def __le__(self, other) -> bool:
-        return self.time <= other.time
-    
-    def __gt__(self, other) -> bool:
-        return self.time > other.time
-    
-    def __ge__(self, other) -> bool:
-        return self.time >= other.time
-
-
-class User:
-    """Represents a Twitter user."""
-
-    def __init__(self, id: int):
-        """Initialize a user."""
-
-        self.id = id
-        self.tweets: list[Tweet] = []
-        self.following: list[User] = list()
-
-    def post(self, id: int, time: int) -> None:
-        """Adds tweet to user's tweet list."""
-
-        self.tweets.append(Tweet(id, time))
+from collections import defaultdict
 
 class Twitter:
 
     def __init__(self):
-        self.userIds = set()
-        self.users = {}
-        self.tweet_time = 0
+        self.user_follows = defaultdict(set) # {userId: {userId2, ...}}
+        self.user_posts = defaultdict(list)  # {userId: [(time, tweetId1), ...]}
+        self.time = 0
 
     def postTweet(self, userId: int, tweetId: int) -> None:
-        """Add a tweet for a user. If the user doesn't exist make it."""
-
-        self.tweet_time += 1  
-        user = self.users.get(userId, User(userId))
-        user.tweets.append(Tweet(tweetId, self.tweet_count))
+        self.time += 1
+        self.user_posts[userId].append((self.time, tweetId))
+        self.user_follows[userId].add(userId)
 
     def getNewsFeed(self, userId: int) -> List[int]:
-        pass        
-    
-    def follow(self, followerId: int, followeeId: int) -> None:
-        self.users[followerId].following.append(self.users[followeeId])
         
-    def unfollow(self, followerId: int, followeeId: int) -> None:
-        pass
-        
+        following = self.user_follows[userId]
+        allPosts = []
 
-# Your Twitter object will be instantiated and called as such:
-# obj = Twitter()
-# obj.postTweet(userId,tweetId)
-# param_2 = obj.getNewsFeed(userId)
-# obj.follow(followerId,followeeId)
-# obj.unfollow(followerId,followeeId)
+        for i, user in enumerate(following):
+            allPosts.extend(self.user_posts[user])
+
+        allPosts.sort(key=lambda x: x[0], reverse=True) 
+        return [x[1] for x in allPosts[:10]]
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        self.user_follows[followerId].add(followeeId)
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        if followeeId in self.user_follows[followerId]:
+            self.user_follows[followerId].remove(followeeId)
