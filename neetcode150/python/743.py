@@ -22,7 +22,6 @@ class Solution:
         # Dijkstra's
         pq = [(k - 1, 0)]
         distances = [0 if i == k - 1 else inf for i in range(n)]
-        parents = [k - 1 if i == k - 1 else None for i in range(n)]
 
         while pq:
             node, distance = heapq.heappop(pq)
@@ -30,7 +29,6 @@ class Solution:
             for neighbor, weight in graph[node]:
                 if distance + weight < distances[neighbor]:
                     distances[neighbor] = distance + weight
-                    parents[neighbor] = node
-                    heapq.heappush(pq, (neighbor, distances + weight))
+                    heapq.heappush(pq, (neighbor, distance + weight))
         
         return max(distances) if inf not in distances else -1
