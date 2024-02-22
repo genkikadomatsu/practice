@@ -1,35 +1,26 @@
 # LeetCode 78 - Subsets
 from typing import List
 
-
 # Recursive
 class Solution:
-    
-    def subsets(self, nums):
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        result = [] 
+        maxlen = len(nums) 
 
+        def recurse(i, current_subset): 
+            nonlocal nums 
 
-        subsets = []
-        subset = []
-
-        def recurse(i: int):
-            if i == len(nums):
-                subsets.append(subset[:])
+            if maxlen == i: 
+                nonlocal result 
+                result.append(current_subset) 
                 return
 
-            # Do not include
-            recurse(i + 1)
-
-            # Include
-            subset.append(nums[i])
-            recurse(i + 1)
-
-            subset.pop()
+            recurse(i + 1, current_subset) 
+            recurse(i + 1, current_subset + [nums[i]])
             return
-    
-        recurse(0)
-        return subsets
 
-print(Solution().subsets([1,2,3]))
+        recurse(0, []) 
+        return result 
 
 # Iterative
 class Solution:
@@ -44,5 +35,3 @@ class Solution:
             subsets += new_subsets
         
         return subsets
-
-print(Solution().subsets([1,2,3]))
