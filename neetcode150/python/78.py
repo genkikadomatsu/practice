@@ -3,24 +3,22 @@ from typing import List
 
 # Recursive
 class Solution:
-    def subsets(self, nums: List[int]) -> List[List[int]]:
-        result = [] 
-        maxlen = len(nums) 
+	def subsets(self, nums: List[int]) -> List[List[int]]:
 
-        def recurse(i, current_subset): 
-            nonlocal nums 
+		result = []
 
-            if maxlen == i: 
-                nonlocal result 
-                result.append(current_subset) 
-                return
+		def recurse(i, current_subset):
+			nonlocal result
 
-            recurse(i + 1, current_subset) 
-            recurse(i + 1, current_subset + [nums[i]])
-            return
+			if i == len(nums):
+				result.append(current_subset)
 
-        recurse(0, []) 
-        return result 
+			recurse(i + 1, current_subset)
+			recurse(i + 1, current_subset + [nums[i]])
+		
+		recurse(0, [])
+		return result
+
 
 # Iterative
 class Solution:
