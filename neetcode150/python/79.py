@@ -1,5 +1,4 @@
 """LeetCode 79 Word Search"""
-from collections import deque
 from typing import List
 
 class Solution:
@@ -44,22 +43,3 @@ class Solution:
                     return True
 
         return False
-
-example_input = (
-    [["A","B","C","E"], ["S","F","C","S"], ["A","D","E","E"]],
-    "SEE"
-) # True
-
-failed_first_try_input = (
-    [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]],
-    "ABCCED"
-) # True
-
-failed_second_attempt = (
-    [["A","B","C","E"],
-     ["S","F","E","S"],
-     ["A","D","E","E"]],
-    "ABCESEEEFS"
-) # True
-
-print(Solution().exist(*failed_second_attempt))
