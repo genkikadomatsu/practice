@@ -8,20 +8,17 @@ class Solution:
         The list is assumed to be in sorted ascending order, but potentially
         rotated to the right any number of times.
         """
+        
+        l, r = 0, len(nums) - 1
 
-        left, right = 0, len(nums) - 1
-        result = float("inf")
+        while True:
+            
+            i = (l + r) // 2
 
-        while left < right:
-            mid = (left + right) // 2
+            if nums[i] <= nums[i - 1]:
+                return nums[i]
 
-            if nums[mid] > nums[right]:
-                left = mid + 1
+            if nums[i] < nums[r]:
+                r = i - 1
             else:
-                result = min(result, nums[mid])
-                right = mid - 1
-
-        return min(result, nums[left]) # this could also be nums[right]            
-
-while True:
-    print(Solution().findMin([int(x) for x in input("list:").split()]))
+                l = i + 1
